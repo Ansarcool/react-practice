@@ -11,10 +11,12 @@ import ProductUpdateForm from "./components/ProductUpdateForm";
 export function ProductApp(): ReactElement {
     const [products, setProducts] = useState<Product[]>([]);
     const [updateProductId, setUpdateProductId] = useState<string | null>(null);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <>
-            <ProductCreateForm products={products} setProducts={setProducts}/>
+            <button onClick={() => setIsModalOpen(true)}>
+                Создать
+            </button>
             <ProductList products={products} onClickUpdate={(productId) => setUpdateProductId(productId)}/>
 
             {updateProductId && (
@@ -25,6 +27,11 @@ export function ProductApp(): ReactElement {
                         productId={updateProductId}
                         onClose={() => setUpdateProductId(null)}
                     />
+                </Modal>
+            )}
+            {isModalOpen && (
+                <Modal onClose={() => setIsModalOpen(false)}>
+                    <ProductCreateForm products={products} setProducts={setProducts} onClose={() => setIsModalOpen(false)}/>
                 </Modal>
             )}
         </>
