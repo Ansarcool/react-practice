@@ -9,6 +9,7 @@ export type ProductCreateFormProps = {
 }
 export default function ProductCreateForm({products, setProducts, onClose}: ProductCreateFormProps) {
     const [formState, setFormState] = useState<ProductFormState>(initialState)
+    const isDisabled = formState.name === "" || formState.price === "" || formState.category === "";
 
     const handleSubmit = (evt: React.SubmitEvent) => {
         evt.preventDefault();
@@ -16,7 +17,6 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
         setFormState(initialState)
         onClose();
     }
-
     return (
         <div>
             <h1>Заполните форму:</h1>
@@ -30,6 +30,7 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                             ...formState,
                             name: evt.target.value
                         })}
+                        required={true}
                     />
                 </label>
                 <label className="label">
@@ -37,10 +38,13 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                     <input
                         type="number"
                         value={formState.price}
-                        onChange={(evt: ChangeEvent<HTMLInputElement>) => setFormState({
-                            ...formState,
-                            price: evt.target.value
-                        })}
+                        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                            setFormState({
+                                ...formState,
+                                price: evt.target.value
+                            });
+                        }}
+                        required={true}
                     />
                 </label>
                 <label>
@@ -48,14 +52,20 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                     <input
                         type="text"
                         value={formState.category}
-                        onChange={(evt: ChangeEvent<HTMLInputElement>) => setFormState({
-                            ...formState,
-                            category: evt.target.value
-                        })}
+                        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                            setFormState({
+                                ...formState,
+                                category: evt.target.value
+                            });
+
+                        }}
+                        required={true}
                     />
                 </label>
-                <button>Отправить</button>
+                <button disabled={isDisabled}>Отправить</button>
             </form>
         </div>
-            )
-            }
+    )
+
+}
+

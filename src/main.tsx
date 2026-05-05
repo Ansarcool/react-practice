@@ -17,7 +17,8 @@ export function ProductApp(): ReactElement {
             <button onClick={() => setIsModalOpen(true)}>
                 Создать
             </button>
-            <ProductList products={products} onClickUpdate={(productId) => setUpdateProductId(productId)}/>
+            <ProductList products={products} onClickUpdate={(productId) => setUpdateProductId(productId)}
+                         onClickDelete={(productId) => setProducts(products.filter(p => p.id !== productId))}/>
 
             {updateProductId && (
                 <Modal onClose={() => setUpdateProductId(null)}>
