@@ -1,5 +1,6 @@
 import {type ChangeEvent, useState} from "react";
 import type {Product, ProductFormState} from "../../types.ts";
+import * as React from "react";
 
 const initialState: ProductFormState = {name: '', price: '', category: ''};
 export type ProductCreateFormProps = {
@@ -19,7 +20,6 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
     }
     return (
         <div>
-            <h1>Заполните форму:</h1>
             <form className="form" autoComplete={"off"} onSubmit={handleSubmit}>
                 <label className="label">
                     Название товара:
@@ -49,23 +49,20 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                 </label>
                 <label>
                     Категория:
-                    <input
-                        type="text"
-                        value={formState.category}
-                        onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                            setFormState({
-                                ...formState,
-                                category: evt.target.value
-                            });
-
-                        }}
-                        required={true}
-                    />
+                    <select required={true}>
+                        <option value="" disabled selected hidden>
+                            Выберите категорию
+                        </option>
+                        <option value="electronic">Электроник</option>
+                        <option value="clothes">Одежда</option>
+                        <option value="products">Продукты</option>
+                        <option value="books">Книги</option>
+                        <option value="homekitchen">Кухня и спорт</option>
+                        <option value="sport">Спорт</option>
+                    </select>
                 </label>
-                <button disabled={isDisabled}>Отправить</button>
+                <button className={"button-create"} disabled={isDisabled}>Создать</button>
             </form>
         </div>
     )
-
 }
-

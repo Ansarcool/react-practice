@@ -1,13 +1,13 @@
 import type {Product} from "../../types.ts";
+import {Button} from "../../shared/components/Button";
+
 export type ProductListProps = {
     products: Product[],
-    onClickUpdate: (productId: string) => void,
-    onClickDelete: (productId: string) => void
+    onClickUpdate: (productId: string) => void
+    onClickDelete: (productId: string) => void;
 }
 
-
 export default function ProductList({products, onClickUpdate, onClickDelete}: ProductListProps) {
-
     return (
         <table border={1}>
             <thead>
@@ -25,8 +25,8 @@ export default function ProductList({products, onClickUpdate, onClickDelete}: Pr
                     <td>{product.price}</td>
                     <td>{product.category}</td>
                     <td>
-                        <button onClick={() => onClickUpdate(product.id)}>Редактировать</button>
-                        <button onClick={() => onClickDelete(product.id)}>Удалить</button>
+                        <Button onClick={() => onClickUpdate(product.id)}>Редактировать</Button>
+                        <Button variant={"destructive"} onClick={() => onClickDelete(product.id)}>Удалить</Button>
                     </td>
                 </tr>
             ))}

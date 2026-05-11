@@ -46,4 +46,4 @@ root.render(
     <>
         <ProductApp/>
     </>
-);
+)

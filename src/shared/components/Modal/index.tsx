@@ -20,8 +20,8 @@ export default function Modal({children, onClose}: ModalProps) {
     }, [onClose]);
     return (
         <div className={'modal'}>
-            <button onClick={onClose}>Закрыть</button>
             <div className={'modal-content'}>
+                <button className={"close-button"} onClick={onClose}>X</button>
                 {children}
             </div>
         </div>

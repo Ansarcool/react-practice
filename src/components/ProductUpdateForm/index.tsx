@@ -31,8 +31,6 @@ export default function ProductUpdateForm({productId, products, setProducts, onC
         onClose();
     }
     return (
-        // <div className={'modal'}>
-        //     <h1>Редактировать товар</h1>
             <form className={'form'} onSubmit={handleSubmit}>
                 <label>
                     Название товара
@@ -42,7 +40,6 @@ export default function ProductUpdateForm({productId, products, setProducts, onC
                     })}
                     />
                 </label>
-
                 <label>
                     Стоимость товара
                     <input type="number" value={formState.price} onChange={(evt: ChangeEvent<HTMLInputElement>) => setFormState({
@@ -59,8 +56,7 @@ export default function ProductUpdateForm({productId, products, setProducts, onC
                     })}/>
                 </label>
 
-                <button>Создать</button>
+                <button>Редактировать</button>
             </form>
-        // </div>
     )
 }

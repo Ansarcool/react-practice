@@ -1,0 +1,40 @@
+.button {
+    font-family: Arial, sans-serif;
+    appearance: none;
+    background-color: transparent;
+}
+
+.button-default {
+    background-color: black;
+    color: white;
+}
+
+.button:disabled {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+    color: #9ca3af;
+    opacity: 1;
+    box-shadow: none;
+    filter: grayscale(1);
+    cursor: not-allowed;
+    text-shadow: none;
+    transform: none;
+}
+
+.button-outline {
+    border: 1px solid gray;
+}
+
+.button-link {
+    border: none;
+}
+
+.button-link:hover {
+    text-decoration: underline;
+}
+
+.button-destructive {
+    background-color: red;
+    color: white;
+    border-color: red;
+}

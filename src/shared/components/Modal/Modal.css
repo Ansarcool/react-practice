@@ -9,7 +9,34 @@
 }
 
 .modal-content {
-    padding: 20px;
+    width: 250px;
+    height: 250px;
     background-color: white;
-    color: black
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.close-button {
+    align-self: flex-end;
+    background: black;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.button-create {
+    margin-right: 105px;
+    background-color: grey;
+    color: black;
+}
+
+.form {
+    display: flex;
+    align-items: center;
 }
