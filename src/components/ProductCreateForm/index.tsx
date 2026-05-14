@@ -1,6 +1,7 @@
 import {type ChangeEvent, useState} from "react";
 import type {Product, ProductFormState} from "../../types.ts";
 import * as React from "react";
+import {Button} from "../../shared/components/Button";
 
 const initialState: ProductFormState = {name: '', price: '', category: ''};
 export type ProductCreateFormProps = {
@@ -11,12 +12,13 @@ export type ProductCreateFormProps = {
 export default function ProductCreateForm({products, setProducts, onClose}: ProductCreateFormProps) {
     const [formState, setFormState] = useState<ProductFormState>(initialState)
     const isDisabled = formState.name === "" || formState.price === "" || formState.category === "";
+    const URL = "https://practicetasks.kz/api/products"
 
     const handleSubmit = (evt: React.SubmitEvent) => {
-        evt.preventDefault();
-        setProducts([...products, {...formState, price: Number(formState.price), id: crypto.randomUUID()}])
-        setFormState(initialState)
-        onClose();
+        // evt.preventDefault();
+        // setProducts([...products, {...formState, price: Number(formState.price), id: crypto.randomUUID()}])
+        // setFormState(initialState)
+        // onClose();
     }
     return (
         <div>
@@ -66,7 +68,7 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                         <option value="sport">Спорт</option>
                     </select>
                 </label>
-                <button className={"button-create"} disabled={isDisabled}>Создать</button>
+                <Button className={"button-create"} disabled={isDisabled}>Создать</Button>
             </form>
         </div>
     )
