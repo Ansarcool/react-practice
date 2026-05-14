@@ -1,6 +1,6 @@
 import {createRoot} from "react-dom/client";
 import "./index.css";
-
+import {App} from "./App.tsx";
 import Modal from "./shared/components/Modal"
 import {type ReactElement, useState} from "react";
 import ProductCreateForm from "./components/ProductCreateForm";
@@ -44,6 +44,7 @@ const root = createRoot(domNode);
 
 root.render(
     <>
-        <ProductApp/>
+        {/*<ProductApp/>*/}
+        <App/>
     </>
 )

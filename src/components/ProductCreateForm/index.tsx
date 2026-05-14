@@ -49,7 +49,12 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                 </label>
                 <label>
                     Категория:
-                    <select required={true}>
+                    <select required={true} onChange={(evt: ChangeEvent<HTMLSelectElement>) => {
+                        setFormState({
+                            ...formState,
+                            category: evt.target.value
+                        });
+                    }}>
                         <option value="" disabled selected hidden>
                             Выберите категорию
                         </option>
