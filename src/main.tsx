@@ -38,13 +38,28 @@ export function ProductApp(): ReactElement {
             <button onClick={() => setIsModalOpen(true)}>
                 Создать
             </button>
-            <ProductList products={products} categories={categories} onClickUpdate={(productId) => setUpdateProductId(productId)}
-                         onClickDelete={(productId) => setProducts(products.filter(p => p.id !== productId))}/>
+            <ProductList products={products} categories={categories}
+                         onClickUpdate={(productId) => {
+                             setUpdateProductId(productId)
+                         }}
+                         onClickDelete={(productId) =>
+                             fetch(`${baseURL}/${productId}`, {
+                                 method: "DELETE"
+                             })
+                                 .then(res => {
+                                     if (res.ok) {
+                                         setProducts(products.filter(p => p.id !== productId));
+                                     }
+                                 })
+                         }/>
 
+
+            {/*setProducts(products.filter(p => p.id !== productId))*/}
             {updateProductId && (
                 <Modal onClose={() => setUpdateProductId(null)}>
                     <ProductUpdateForm
                         products={products}
+                        categories={categories}
                         setProducts={setProducts}
                         productId={updateProductId}
                         onClose={() => setUpdateProductId(null)}
@@ -53,7 +68,7 @@ export function ProductApp(): ReactElement {
             )}
             {isModalOpen && (
                 <Modal onClose={() => setIsModalOpen(false)}>
-                    <ProductCreateForm products={products} setProducts={setProducts} onClose={() => setIsModalOpen(false)}/>
+                    <ProductCreateForm products={products} categories={categories} setProducts={setProducts} onClose={() => setIsModalOpen(false)}/>
                 </Modal>
             )}
         </>

@@ -1,24 +1,49 @@
 import {type ChangeEvent, useState} from "react";
-import type {Product, ProductFormState} from "../../types.ts";
+import type {Categories, Product, ProductFormState} from "../../types.ts";
 import * as React from "react";
 import {Button} from "../../shared/components/Button";
 
 const initialState: ProductFormState = {name: '', price: '', category: ''};
 export type ProductCreateFormProps = {
     products: Product[];
-    setProducts: (NewProducts: Product[]) => void;
+    categories: Categories[];
+    setProducts: (NewProducts: (Product | {
+        name: string;
+        price: number;
+        category: string;
+        id: string;
+        categoryId: number;
+    })[]) => void;
     onClose: () => void;
 }
-export default function ProductCreateForm({products, setProducts, onClose}: ProductCreateFormProps) {
+const baseURL = "https://practicetasks.kz/api/products";
+
+export default function ProductCreateForm({products, categories, setProducts, onClose}: ProductCreateFormProps) {
     const [formState, setFormState] = useState<ProductFormState>(initialState)
     const isDisabled = formState.name === "" || formState.price === "" || formState.category === "";
-    const URL = "https://practicetasks.kz/api/products"
-
     const handleSubmit = (evt: React.SubmitEvent) => {
-        // evt.preventDefault();
-        // setProducts([...products, {...formState, price: Number(formState.price), id: crypto.randomUUID()}])
-        // setFormState(initialState)
-        // onClose();
+        evt.preventDefault();
+        fetch(baseURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({name: formState.name, price: Number(formState.price), categoryId: Number(formState.category)}),
+        })
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            }
+        })
+            .then(() => {
+                setProducts([
+                    ...products, {name: formState.name, price: Number(formState.price), categoryId: Number(formState.category), id: crypto.randomUUID()}
+                ])
+                onClose();
+            })
+            .catch((err) => {
+                console.error(err);
+            })
     }
     return (
         <div>
@@ -51,21 +76,24 @@ export default function ProductCreateForm({products, setProducts, onClose}: Prod
                 </label>
                 <label>
                     Категория:
-                    <select required={true} onChange={(evt: ChangeEvent<HTMLSelectElement>) => {
-                        setFormState({
-                            ...formState,
-                            category: evt.target.value
-                        });
-                    }}>
-                        <option value="" disabled selected hidden>
+                    <select
+                        required={true}
+                        value={formState.category}
+                        onChange={(evt: ChangeEvent<HTMLSelectElement>) =>
+                            setFormState({
+                                ...formState,
+                                category: evt.target.value
+                            })
+                        }
+                    >
+                        <option value="" disabled hidden>
                             Выберите категорию
                         </option>
-                        <option value="electronic">Электроник</option>
-                        <option value="clothes">Одежда</option>
-                        <option value="products">Продукты</option>
-                        <option value="books">Книги</option>
-                        <option value="homekitchen">Кухня и спорт</option>
-                        <option value="sport">Спорт</option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
                     </select>
                 </label>
                 <Button className={"button-create"} disabled={isDisabled}>Создать</Button>

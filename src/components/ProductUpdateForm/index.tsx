@@ -1,17 +1,20 @@
 import {type ChangeEvent, useState} from "react";
-import type {Product, ProductFormState} from "../../types.ts";
+import type {Categories, Product, ProductFormState} from "../../types.ts";
 import './ProductUpdateForm.css';
+import * as React from "react";
+
 
 export type ProductUpdateFormProps = {
     products: Product[],
     setProducts: (newProducts: Product[]) => void,
+    categories: Categories[],
     productId: string,
     onClose: () => void,
 }
-
-export default function ProductUpdateForm({productId, products, setProducts, onClose}: ProductUpdateFormProps) {
+const baseURL = "https://practicetasks.kz/api/products";
+export default function ProductUpdateForm({productId, products, setProducts, categories, onClose}: ProductUpdateFormProps) {
     const product = products.find(p => p.id === productId);
-    const [formState, setFormState] = useState<ProductFormState>({name: product?.name ?? '', price: product ? String(product.price) : '', category: product?.category ?? ''});
+    const [formState, setFormState] = useState<ProductFormState>({name: product?.name ?? '', price: product ? String(product.price) : '', category: product ? String(product.categoryId) : ''});
 
     if (!product) {
         return (
@@ -20,15 +23,29 @@ export default function ProductUpdateForm({productId, products, setProducts, onC
     }
     const handleSubmit = (evt :React.SubmitEvent) => {
         evt.preventDefault();
-        const newArr = products.filter(p => p.id !== productId)
-        newArr.push({
-            id: productId,
-            name: formState.name,
-            price: Number(formState.price),
-            category: formState.category
+        fetch(`${baseURL}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: productId,
+                name: formState.name,
+                price: Number(formState.price),
+                categoryId: Number(formState.category)
+            })
         })
-        setProducts(newArr);
-        onClose();
+            .then(res => res.json())
+            .then(updated => {
+                const newArr = products.filter(p => p.id !== productId);
+                newArr.push(updated);
+                setProducts(newArr);
+                onClose();
+                console.log(product.id);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
     return (
             <form className={'form'} onSubmit={handleSubmit}>
@@ -50,10 +67,25 @@ export default function ProductUpdateForm({productId, products, setProducts, onC
 
                 <label>
                     Категория
-                    <input type="text" value={formState.category} onChange={(evt: ChangeEvent<HTMLInputElement>) => setFormState({
-                        ...formState,
-                        category: evt.target.value
-                    })}/>
+                    <select
+                        required={true}
+                        value={formState.category}
+                        onChange={(evt: ChangeEvent<HTMLSelectElement>) =>
+                            setFormState({
+                                ...formState,
+                                category: evt.target.value
+                            })
+                        }
+                    >
+                        <option value="" disabled hidden>
+                            Выберите категорию
+                        </option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                 </label>
 
                 <button>Редактировать</button>
