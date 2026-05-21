@@ -35,10 +35,8 @@ export default function ProductCreateForm({products, categories, setProducts, on
                 return res.json()
             }
         })
-            .then(() => {
-                setProducts([
-                    ...products, {name: formState.name, price: Number(formState.price), categoryId: Number(formState.category), id: crypto.randomUUID()}
-                ])
+            .then((newProduct) => {
+                setProducts([ ...products, newProduct ])
                 onClose();
             })
             .catch((err) => {

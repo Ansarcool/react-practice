@@ -1,14 +1,13 @@
 .modal {
-    position: absolute;
-    inset: 0;
+    position: fixed;
     background-color: rgba(0 0 0 / .4);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
-
 .modal-content {
+    position: fixed;
     width: 250px;
     height: 250px;
     background-color: white;
